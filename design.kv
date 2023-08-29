@@ -1,0 +1,279 @@
+<RefreshMainWindow>:
+	name: "refresh"
+
+	MDBoxLayout:
+		oreintation: "vertical"
+
+<AboutToDoApp>:
+	name: "about_app"
+
+	
+		
+	MDBoxLayout:
+		orientation: "vertical"
+		padding: "10dp", 0, "10dp", "20dp"
+
+		MDLabel:
+			text: "About App"
+			halign: "center"
+			bold: True
+			font_size: "30dp"
+			size_hint: 1, None
+			height: "90dp"
+			md_bg_color: app.theme_cls.primary_color
+
+		MDScrollView:
+			size_hint: 1, 0.7
+			pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+
+			MDLabel:
+				text : root.app_description
+				font_size: "18dp"
+				size_hint_y: 0.9
+				padding: "5dp", 0
+
+
+		
+
+		MDRaisedButton:
+			text: "back"
+			on_release: 
+				root.manager.transition.direction = 'left'
+				root.manager.current = "mainwindow"
+				
+
+
+<BuyMeCoffeeDialogContent>:
+	orientation: 'vertical'
+	size_hint: 1, None
+	height: "200dp"
+	spacing: "2dp"
+
+	MDTextField:
+		id: email
+		hint_text: "Email"
+		required: True
+		validator: "email"
+		icon_left: 'email-open'
+
+	MDTextField:
+		id: phone
+		hint_text: "Phone"
+		required: True
+		validator: "phone"
+		icon_left: 'phone'
+
+	MDTextField:
+		id: amount
+		hint_text: "Amount"
+		required: True
+		icon_left: 'currency-usd'
+
+	MDRaisedButton:
+		text: "Buy Coffee"
+		size_hint_x: 1
+		on_release: root.buy_coffee_now()
+
+
+
+<MainWindow>:
+	name: "mainwindow"
+
+	MDScrollView:
+		size_hint: 0.85, 0.75
+		pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+
+		MDList:
+			id: container
+			spacing: 5
+
+			# list here
+
+			
+	# Top navbar layout
+	MDNavigationLayout:
+		MDScreenManager:
+			MDScreen:
+				MDTopAppBar:
+					title: "TaskManager"
+					elevation: 4
+					type_height: "small"
+					right_action_items: [['dots-vertical', lambda x: media.set_state("open")],]
+					pos_hint: {'top': 1}
+
+		MDNavigationDrawer:
+			id: media
+			radius: (5, 0, 0, 5)
+			anchor: "right"
+			size_hint: None, None
+			width: '250dp'
+			height: '300dp'
+			pos_hint: {'top': 0.9}
+
+			 # Drawer content here	
+			MDNavigationDrawerMenu:
+				MDNavigationDrawerHeader:
+					title: "Follow me"
+					title_font_size: "20sp"
+
+				MDNavigationDrawerItem:
+					icon: "linkedin"
+					text: "LinkedIn"
+					text_color: (1,1,1,0.85)
+					selected_color: (1,1,1,0.85)
+					on_release: 
+						root.open_media_link_in_browser('l')
+						media.set_state("close")
+
+				MDNavigationDrawerItem:
+					icon: "facebook"
+					text: "Facebook"
+					text_color: (1,1,1,0.85)
+					selected_color: (1,1,1,0.85)
+					on_release: 
+						root.open_media_link_in_browser('f')
+						media.set_state("close")
+
+				MDNavigationDrawerItem:
+					icon: "twitter"
+					text: "Twitter"
+					text_color: (1,1,1,0.85)
+					selected_color: (1,1,1,0.85)
+					on_release: 
+						root.open_media_link_in_browser('t')
+						media.set_state("close")
+
+				MDNavigationDrawerItem:
+					icon: "instagram"
+					text: "Instagram"
+					text_color: (1,1,1,0.85)
+					selected_color: (1,1,1,0.85)
+					on_release: 
+						root.open_media_link_in_browser('i')
+						media.set_state("close")
+
+				MDNavigationDrawerItem:
+					icon: "share"
+					text: "Share app"
+					text_color: (1,1,1,0.85)
+					selected_color: (1,1,1,0.85)
+					on_release: 
+						root.share_app
+						media.set_state("close")
+
+				MDNavigationDrawerItem:
+					icon: "book-edit"
+					text: "Feedback"
+					text_color: (1,1,1,0.85)
+					selected_color: (1,1,1,0.85)
+					on_release: 
+						root.send_feedback
+						media.set_state("close")
+	
+	# Bottom navbar layout
+	MDBottomAppBar:
+		MDTopAppBar:
+			title: "sakaxo"
+			type: "bottom"	
+			icon: "plus-thick"
+			#left_action_items: [["coffee", lambda x: root.show_buy_coffee_dialog()],]	
+			right_action_items: [["help", lambda x: root.direct_to_about_app_screen()],]	
+			mode: "center"
+
+			on_action_button: root.show_add_task_window()
+		
+
+
+<AddNewTaskWindow>:
+	#name: "addtask"
+
+	MDBoxLayout:
+		orientation: "vertical"
+		spacing: "10dp"
+
+		MDTopAppBar:
+			title: "New Task"
+			left_action_items: [["arrow-left", lambda x: root.show_main_window() ],]
+
+
+		MDGridLayout:
+			cols: 1
+			spacing: "20dp"
+			size_hint: 0.8, 0.8
+			pos_hint: {'center_x': 0.5, 'center_y': 0.5}			
+			
+
+			MDTextField:
+				id: task_input
+				text: ""
+				hint_text: "What is to be done?"
+				helper_text: "Enter task here"
+				text_color_focus: (1,1,1,0.7)
+				font_size: "20sp"
+				icon_right: "book-edit"
+				mode: "rectangle"
+				
+
+			MDBoxLayout:
+				adaptive_height: True
+
+				MDTextField:
+					id: date
+
+					text: ""
+					text_color_focus: (1,1,1,0.7)
+					font_size: "18sp"
+					padding: "20dp"
+					hint_text: "Due date"
+					helper_text: "Date format: yyyy/mm/dd"
+					helper_text_mode: "persistent"
+					#date_interval: "01/01/1900", None
+					
+
+				MDIconButton:
+					icon: "calendar"
+					on_release: root.show_date_picker()
+
+
+			MDBoxLayout:
+				adaptive_height: True
+				size_hint_x: 1
+
+				MDIconButton:
+					icon: "refresh"
+					on_release: root.reset_time()
+
+				MDFlatButton:
+					id: time
+					text: "Set time"
+					text_color: (1,1,1,0.7)
+					#halign: "left"
+					padding: "20dp"
+					size_hint_x: 0.7
+
+					on_release: root.show_time_picker()
+					
+
+				MDIconButton:
+					icon: "clock"
+					on_release: root.show_time_picker()
+
+
+
+		MDBoxLayout:
+			orientation: "vertical"
+			adaptive_size: True
+			padding: "30dp", "20dp"
+			size_hint_x: 1
+			#md_bg_color: app.theme_cls.primary_color
+
+			MDFloatingActionButton:
+				icon: "check-all"
+				elevation: 3
+				type: "large"
+				pos_hint: {"right": 1 ,}
+
+				on_release: root.save_task()
+		
+						
+				
